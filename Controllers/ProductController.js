@@ -3,7 +3,16 @@ const { cloudinary } = require("../Config/cloudinaryConfig");
 
 const addProduct = async (req, res) => {
   try {
-    const { name, description, category, brand, specifications, price, isInStock } = req.body;
+    const {
+      name,
+      description,
+      category,
+      brand,
+      specifications,
+      price,
+      isInStock,
+    } = req.body;
+    console.log(req.body);
 
     if (!req.file) {
       return res.status(400).json({ message: "Product image is required" });
@@ -18,19 +27,19 @@ const addProduct = async (req, res) => {
       isInStock,
       specifications: JSON.parse(specifications),
       image: {
-        url: req.file?.secure_url || req.file?.path,       
-        public_id: req.file?.public_id || req.file?.filename, 
+        url: req.file?.secure_url || req.file?.path,
+        public_id: req.file?.public_id || req.file?.filename,
       },
     });
     let specsParsed = {};
     if (specifications) {
-    try {
-    specsParsed = JSON.parse(specifications);
-     } catch {
-    specsParsed = {};
-     }
-    } 
-
+      try {
+        specsParsed = JSON.parse(specifications);
+      } catch {
+        specsParsed = {};
+      }
+    }
+    console.log(product);
 
     res.status(201).json({ message: "Product added successfully", product });
   } catch (error) {
@@ -115,5 +124,10 @@ const searchProducts = async (req, res) => {
   }
 };
 
-
-module.exports = { addProduct, getProducts, deleteProduct, updateProduct, searchProducts };
+module.exports = {
+  addProduct,
+  getProducts,
+  deleteProduct,
+  updateProduct,
+  searchProducts,
+};
